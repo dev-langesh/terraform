@@ -8,6 +8,10 @@ resource "aws_iam_user_login_profile" "iam_user_passwords" {
   password_reset_required = true
   user = aws_iam_user.iam_users[each.value].name
   for_each = var.users
+
+  lifecycle {
+    ignore_changes = all
+  }
 }
 
 resource "aws_iam_group" "srec" {
@@ -17,7 +21,8 @@ resource "aws_iam_group" "srec" {
 resource "aws_iam_group_membership" "srec_students_membership" {
   name = "srec_students"
   group = aws_iam_group.srec.name
-  users = var.users
+  users = [each.value.name]
+  for_each = aws_iam_user.iam_users
 }
 
 resource "aws_iam_group_policy" "srec_students_policy" {
