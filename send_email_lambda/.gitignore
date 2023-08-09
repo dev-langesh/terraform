@@ -1,2 +1,4 @@
 /node_modules
 .env
+.envexample.txt
+send_email_lambda.zip

@@ -1,30 +1,28 @@
+const { extractUsers } = require("./lib/extractUsers");
 const { getobjet } = require("./lib/getObject");
-const fs = require("fs");
-const path = require("path");
+
 const { sendEmail } = require("./lib/sendEmail");
 
 require("dotenv").config();
 
 async function handler() {
   await getobjet();
-  const localFilePath = path.join("/tmp", "users.json");
-  const jsonState = fs.readFileSync(localFilePath, "utf-8");
 
-  const state = JSON.parse(jsonState);
+  const users = extractUsers();
 
-  const loginProfile = state.resources.filter(
-    (resource) => resource.type === "aws_iam_user_login_profile"
-  );
+  for (const user of users) {
+    const email = user.name;
+    const password = user.password;
 
-  const users = loginProfile[0].instances.map((instance) => {
-    return { name: instance.index_key, password: instance.attributes.password };
-  });
+    const response = await sendEmail(email, password);
 
-  users.forEach((user) => {
-    sendEmail(user.name, user.password);
-  });
+    return {
+      statusCode: 200,
+      body: JSON.stringify({
+        input: response,
+      }),
+    };
+  }
 }
-
-// handler();
 
 module.exports = { handler };
