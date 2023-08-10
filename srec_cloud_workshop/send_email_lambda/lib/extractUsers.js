@@ -1,22 +1,20 @@
-const fs = require("fs");
 const path = require("path");
+const {
+  extractUsersFromLoginProfile,
+} = require("./extractUsersFromLoginProfile");
 
 function extractUsers() {
-  const localFilePath = path.join("/tmp", "users.json");
-  const jsonState = fs.readFileSync(localFilePath, "utf-8");
+  let currFilePath = path.join("/tmp", "current.json");
+  let prevFilePath = path.join("/tmp", "prev.json");
 
-  const state = JSON.parse(jsonState);
+  const currentUsers = extractUsersFromLoginProfile(currFilePath);
+  const nonCurrentUsers = extractUsersFromLoginProfile(prevFilePath);
 
-  const loginProfile = state.resources.filter(
-    (resource) => resource.type === "aws_iam_user_login_profile"
+  const nonCurrentUserNameList = nonCurrentUsers.map((user) => user.name);
+
+  const users = currentUsers.filter(
+    (user) => !nonCurrentUserNameList.includes(user.name)
   );
-
-  const users = loginProfile[0].instances.map((instance) => {
-    return {
-      name: instance.index_key,
-      password: instance.attributes.password,
-    };
-  });
 
   return users;
 }
