@@ -18,6 +18,10 @@ resource "aws_lambda_function" "send_email_lambda" {
   }
 }
 
+resource "aws_sqs_queue" "lambda_dlq" {
+  name = "lambda_dlq"
+}
+
 data "archive_file" "lambda_code" {
   type        = "zip"
   source_dir  = "../send_email_lambda"  # Path to the directory containing your Lambda code files

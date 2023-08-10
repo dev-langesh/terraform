@@ -1,7 +1,3 @@
-
-
-
-
 resource "aws_dynamodb_table" "terraform-state-lock" {
   name = "terraform-state-lock"
   hash_key = "LockID"

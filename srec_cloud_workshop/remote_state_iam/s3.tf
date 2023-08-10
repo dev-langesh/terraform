@@ -17,6 +17,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "example_lifecycle" {
 
     noncurrent_version_expiration {
       noncurrent_days = 1
+      newer_noncurrent_versions = 2
     }
   }
 
