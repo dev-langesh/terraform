@@ -9,7 +9,7 @@ const transporter = nodemailer.createTransport({
 });
 
 async function sendEmail(email, password) {
-  const body = `USERNAME: ${email} \nPASSWORD: ${password}`;
+  const body = `SIGN IN URL: https://child-langesh.signin.aws.amazon.com/console \nUSERNAME: ${email} \nPASSWORD: ${password}`;
   console.log(body);
 
   console.log("sending email");

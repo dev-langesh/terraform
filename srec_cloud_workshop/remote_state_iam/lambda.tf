@@ -8,8 +8,8 @@ resource "aws_lambda_function" "send_email_lambda" {
 
   environment {
     variables = {
-      EMAIL = "langesh705@gmail.com"
-      APP_PASSWORD = "rqlyhpmlftxcjaum"
+      EMAIL = var.lambda_env.EMAIL
+      APP_PASSWORD = var.lambda_env.APP_PASSWORD
     }
   }
 
@@ -20,7 +20,7 @@ resource "aws_lambda_function" "send_email_lambda" {
 
 data "archive_file" "lambda_code" {
   type        = "zip"
-  source_dir  = "/home/langesh/Projects/terraform/send_email_lambda"  # Path to the directory containing your Lambda code files
+  source_dir  = "../send_email_lambda"  # Path to the directory containing your Lambda code files
   output_path = "send_email_lambda.zip"
 }
 
