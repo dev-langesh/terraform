@@ -4,5 +4,6 @@ variable "region" {
 
 variable "users" {
   type = set(string)
-  default = [ "langesh705@gmail.com"]
+  default = [ "dev.langesh@gmail.com"]
 }
+

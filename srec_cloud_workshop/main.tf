@@ -18,28 +18,14 @@ resource "aws_iam_group" "srec" {
   name = "SREC"
 }
 
+resource "aws_iam_group_policy_attachment" "policy_attachment" {
+  policy_arn = "arn:aws:iam::686355966270:policy/ec2-srec"
+  group = aws_iam_group.srec.name
+}
+
 resource "aws_iam_group_membership" "srec_students_membership" {
   name = "srec_students"
   group = aws_iam_group.srec.name
   users = [each.value.name]
   for_each = aws_iam_user.iam_users
 }
-
-resource "aws_iam_group_policy" "srec_students_policy" {
-  name = "srec_students_policy"
-  group = aws_iam_group.srec.name
-  policy = jsonencode({
-     Version = "2012-10-17"
-      Statement = [
-        {
-          Action = [
-            "iam:*",
-            "ec2:Describe*"
-          ]
-          Effect   = "Allow"
-          Resource = "*"
-        },
-      ]
-  })
-}
-
