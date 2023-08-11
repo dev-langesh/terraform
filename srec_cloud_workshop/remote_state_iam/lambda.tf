@@ -24,7 +24,7 @@ resource "aws_sqs_queue" "lambda_dlq" {
 
 data "archive_file" "lambda_code" {
   type        = "zip"
-  source_dir  = "../send_email_lambda"  # Path to the directory containing your Lambda code files
+  source_dir  = "../extract_users_lambda"  # Path to the directory containing your Lambda code files
   output_path = "send_email_lambda.zip"
 }
 

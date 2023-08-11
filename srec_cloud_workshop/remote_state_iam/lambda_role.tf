@@ -24,3 +24,8 @@ resource "aws_iam_role_policy_attachment" "s3_policy_attachment" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"   # Replace with appropriate S3 policy ARN
   role       = aws_iam_role.lambda_role.name
 }
+
+resource "aws_iam_role_policy_attachment" "dynamodb_policy_attachment" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess"   # Replace with appropriate S3 policy ARN
+  role       = aws_iam_role.lambda_role.name
+}
