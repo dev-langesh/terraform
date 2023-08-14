@@ -10,6 +10,10 @@ const { removeDeletedUsers } = require("./lib/aws/dynamodb/removeDeletedUsers");
 async function handler() {
   await getobjet();
 
+  const deletedUsers = await filterDeletedUsers();
+
+  removeDeletedUsers(deletedUsers);
+
   const users = await filterUsersToSendEmail();
 
   for (const user of users) {
@@ -20,10 +24,6 @@ async function handler() {
 
     updateEmailToDynamodb(email);
   }
-
-  const deletedUsers = await filterDeletedUsers();
-
-  removeDeletedUsers(deletedUsers);
 
   return {
     statusCode: 200,
