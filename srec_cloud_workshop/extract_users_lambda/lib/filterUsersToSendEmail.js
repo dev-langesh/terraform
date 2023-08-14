@@ -4,17 +4,17 @@ const { getMailedUsers } = require("./aws/dynamodb/getMailedUsers");
 async function filterUsersToSendEmail() {
   const users = extractUsersFromTfState();
 
-  console.log(users);
+  console.log("from tfstate", users);
 
   const emailedUsers = await getMailedUsers();
 
-  console.log(emailedUsers);
+  console.log("from db", emailedUsers);
 
   const filteredUsers = users.filter(
     (user) => !emailedUsers.includes(user.name)
   );
 
-  console.log(filteredUsers);
+  console.log("send email", filteredUsers);
 
   return filteredUsers;
 }

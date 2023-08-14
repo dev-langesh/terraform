@@ -11,9 +11,11 @@ async function getMailedUsers() {
 
   const scanCommand = new ScanCommand(scanParams);
 
+  // console.log("scan");
+
   const scanResponse = await dynamodbClient.send(scanCommand);
   const emails = scanResponse.Items.map((item) => item.email.S);
-  console.log("Emails:", emails);
+  // console.log("Emails:", emails);
   return emails;
 }
 

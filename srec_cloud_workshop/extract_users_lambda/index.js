@@ -1,12 +1,11 @@
-// const { extractUsers } = require("./lib/extractUsers");
-const { getMailedUsers } = require("./lib/aws/dynamodb/getMailedUsers");
 const { filterUsersToSendEmail } = require("./lib/filterUsersToSendEmail");
 const { getobjet } = require("./lib/aws/s3/getObject");
-const { extractUsersFromTfState } = require("./lib/extractUsersFromTfState");
 const { sendEmail } = require("./lib/sendEmail");
 const {
   updateEmailToDynamodb,
 } = require("./lib/aws/dynamodb/updateEmailToDynamodb");
+const { filterDeletedUsers } = require("./lib/filterDeletedUsers");
+const { removeDeletedUsers } = require("./lib/aws/dynamodb/removeDeletedUsers");
 
 async function handler() {
   await getobjet();
@@ -21,6 +20,10 @@ async function handler() {
 
     updateEmailToDynamodb(email);
   }
+
+  const deletedUsers = await filterDeletedUsers();
+
+  removeDeletedUsers(deletedUsers);
 
   return {
     statusCode: 200,
