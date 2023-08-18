@@ -16,6 +16,8 @@ resource "aws_lambda_function" "send_email_lambda" {
   dead_letter_config {
     target_arn = aws_sqs_queue.lambda_dlq.arn
   }
+
+  layers = ["arn:aws:lambda:ap-south-1:686355966270:layer:iam-email-nodejs:1"]
 }
 
 resource "aws_sqs_queue" "lambda_dlq" {
@@ -24,7 +26,7 @@ resource "aws_sqs_queue" "lambda_dlq" {
 
 data "archive_file" "lambda_code" {
   type        = "zip"
-  source_dir  = "../extract_users_lambda"  # Path to the directory containing your Lambda code files
+  source_dir  = "../send_mail_lambda"  # Path to the directory containing your Lambda code files
   output_path = "send_email_lambda.zip"
 }
 

@@ -1,3 +1,4 @@
+const { log } = require("console");
 const fs = require("fs");
 const path = require("path");
 
@@ -12,12 +13,16 @@ function extractUsersFromTfState() {
     (resource) => resource.type === "aws_iam_user_login_profile"
   );
 
-  const users = loginProfile[0].instances.map((instance) => {
-    return {
-      name: instance.index_key,
-      password: instance.attributes.password,
-    };
-  });
+  let users = [];
+
+  if (loginProfile.length > 0) {
+    users = loginProfile[0].instances.map((instance) => {
+      return {
+        name: instance.index_key,
+        password: instance.attributes.password,
+      };
+    });
+  }
 
   return users;
 }
